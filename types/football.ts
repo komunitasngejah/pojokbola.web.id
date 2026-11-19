@@ -106,3 +106,65 @@ export interface Scorers {
   season: string | null;
   rows: TopScorer[];
 }
+
+export interface MatchEvent {
+  minute: number | null;
+  injuryTime: number | null;
+  type: string | null;
+  teamName: string | null;
+  scorer: string | null;
+  assist: string | null;
+}
+
+export interface Booking {
+  minute: number | null;
+  teamName: string | null;
+  player: string | null;
+  card: 'YELLOW' | 'RED' | 'YELLOW_RED' | 'UNKNOWN';
+}
+
+export interface Substitution {
+  minute: number | null;
+  teamName: string | null;
+  playerIn: string | null;
+  playerOut: string | null;
+}
+
+export interface LineupPlayer {
+  name: string;
+  shirtNumber: number | null;
+  position: string | null;
+}
+
+export interface MatchDetail {
+  match: Match;
+  venue: string | null;
+  referees: { name: string; role: string | null }[];
+  goals: MatchEvent[];
+  bookings: Booking[];
+  substitutions: Substitution[];
+  /** null bila provider tidak menyediakan susunan pemain pada paket ini. */
+  lineups: { home: LineupPlayer[]; away: LineupPlayer[] } | null;
+}
+
+export interface SquadMember {
+  name: string;
+  position: string | null;
+  nationality: string | null;
+  dateOfBirth: string | null;
+}
+
+export interface ClubProfile {
+  id: string;
+  name: string;
+  shortName: string | null;
+  crestUrl: string | null;
+  founded: number | null;
+  venue: string | null;
+  address: string | null;
+  website: string | null;
+  clubColors: string | null;
+  coach: { name: string; nationality: string | null } | null;
+  competitions: { code: string; name: string }[];
+  squad: SquadMember[];
+}

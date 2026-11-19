@@ -1,5 +1,6 @@
 import { CATEGORIES, COMPETITIONS, SITE } from '@/lib/config';
 import { loadArticles, loadAuthors, EMPTY_SENTINEL } from '@/lib/content/loader';
+import { loadClubSnapshot } from '@/lib/content/snapshot';
 
 export interface SitemapEntry {
   path: string; // selalu diawali "/" dan diakhiri "/"
@@ -43,6 +44,10 @@ export function sitemapEntries(): SitemapEntry[] {
   }
   for (const a of loadAuthors()) {
     entries.push({ path: `/penulis/${a.slug}/`, lastModified: null, priority: 0.4, changeFrequency: 'monthly' });
+  }
+  entries.push({ path: '/klub/', lastModified: null, priority: 0.6, changeFrequency: 'weekly' });
+  for (const c of loadClubSnapshot().clubs) {
+    entries.push({ path: `/klub/${c.slug}/`, lastModified: c.fetchedAt, priority: 0.6, changeFrequency: 'weekly' });
   }
   for (const a of loadArticles()) {
     entries.push({

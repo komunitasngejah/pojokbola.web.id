@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "pages:dev": "wrangler pages dev out --compatibility-date=2024-09-23",
-    "deploy": "wrangler pages deploy out --project-name=pojokbola"
+    "deploy": "wrangler pages deploy out --project-name=pojokbola",
+    "snapshot:clubs": "node scripts/snapshot-clubs.mjs",
+    "build:prod": "node scripts/snapshot-clubs.mjs && next build"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

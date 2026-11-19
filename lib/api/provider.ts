@@ -1,4 +1,4 @@
-import type { Match, Scorers, Standings } from '@/types/football';
+import type { ClubProfile, Match, MatchDetail, Scorers, Standings } from '@/types/football';
 
 /**
  * Kontrak abstraksi provider. Setiap provider (Football-Data.org, API-Football,
@@ -22,6 +22,12 @@ export interface FootballProvider {
   /** Daftar pencetak gol terbanyak satu kompetisi. */
   getScorers(competitionCode: string, season?: string): Promise<Scorers>;
 
-  /** Detail satu pertandingan. */
-  getMatchById(matchId: string): Promise<Match>;
+  /** Detail satu pertandingan (skor, kejadian, kartu, pergantian, susunan pemain jika tersedia). */
+  getMatchDetail(matchId: string): Promise<MatchDetail>;
+
+  /** Profil satu klub beserta skuad. */
+  getTeam(teamId: string): Promise<ClubProfile>;
+
+  /** Pertandingan satu klub dalam rentang tanggal (YYYY-MM-DD). */
+  getTeamMatches(teamId: string, dateFrom: string, dateTo: string): Promise<Match[]>;
 }

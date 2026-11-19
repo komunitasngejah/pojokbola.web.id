@@ -5,7 +5,8 @@
 export const SITE = {
   name: 'PojokBola',
   domain: 'pojokbola.web.id',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pojokbola.web.id',
+  // Nilai tetap: Pages Function berjalan di Workers yang tidak memiliki `process`.
+  url: 'https://pojokbola.web.id',
   locale: 'id_ID',
   language: 'id',
   tagline: 'Semua Informasi Sepak Bola Ada di Satu Pojok.',

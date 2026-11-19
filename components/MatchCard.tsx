@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import type { Match } from '@/types/football';
+import { matchSlug } from '@/lib/match/slug';
 import { formatKickoffTime } from '@/lib/format/time';
 import { StatusBadge } from './StatusBadge';
 
@@ -34,6 +36,7 @@ export function MatchCard({ match }: { match: Match }) {
         <StatusBadge status={match.status} minute={match.minute} />
       </header>
 
+      <Link href={`/pertandingan/${matchSlug(match)}/`} className="block rounded-md focus-visible:ring-2">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <div className="flex min-w-0 items-center gap-2">
           <TeamLogo name={match.home.name} src={match.home.crestUrl} />
@@ -49,6 +52,7 @@ export function MatchCard({ match }: { match: Match }) {
           <TeamLogo name={match.away.name} src={match.away.crestUrl} />
         </div>
       </div>
+      </Link>
     </article>
   );
 }

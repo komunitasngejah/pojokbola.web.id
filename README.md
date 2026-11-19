@@ -19,7 +19,9 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 | Indeks kompetisi dan halaman per kompetisi (`/kompetisi/[slug]/`) | Selesai (tahap 2) |
 | Komponen navigasi responsif, skeleton, empty state, error state | Selesai |
 | Metadata SEO dasar, JSON-LD Organization & WebSite | Selesai |
-| Detail pertandingan (`/pertandingan/[slug]/`) dan profil klub (`/klub/[slug]/`) | **Belum**, lihat catatan di bawah |
+| Detail pertandingan (`/pertandingan/[slug]/`), Pages Function, render HTML di server | Selesai (tahap 5) |
+| Profil klub (`/klub/[slug]/`), static snapshot dari `content/snapshots/clubs.json` | Selesai (tahap 5) |
+| Jadwal & hasil per klub, proxy `/api/team-matches` | Selesai (tahap 5) |
 | Sistem berita berbasis Markdown (`/berita/`, `/berita/[slug]/`, `/berita/kategori/[slug]/`) dengan gerbang kualitas saat build | Selesai (tahap 3) |
 | Profil penulis (`/penulis/`, `/penulis/[slug]/`) | Selesai (tahap 3) |
 | RSS feed (`/rss.xml`, 50 artikel terbaru) | Selesai (tahap 3) |
@@ -48,6 +50,38 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 Build akan menolak artikel dengan judul lebih dari 70 karakter, deskripsi di luar 50–160 karakter, kategori tak dikenal, penulis tanpa profil, atau isi kurang dari 300 kata. Aturan ini sengaja dibuat untuk menjaga kualitas dan kelayakan AdSense.
 
 Halaman `/berita/_kosong/` dan `/penulis/_kosong/` adalah sentinel teknis agar static export tetap berjalan saat belum ada konten. Keduanya diberi `noindex` dan diarahkan ke 404 lewat `public/_redirects`.
+
+## Arsitektur data (hibrida)
+
+| Fitur | Teknologi |
+|---|---|
+| Beranda, berita, halaman legal | Static HTML (dibuat saat build) |
+| Live Score, klasemen, jadwal, hasil, statistik | Proxy `/api/*` (Pages Functions) dengan cache edge |
+| Detail pertandingan `/pertandingan/{id}-{home}-vs-{away}/` | Pages Function, render HTML di server, cache 60 detik (live) atau 5 menit |
+| Profil klub `/klub/[slug]/` | Static snapshot, diperbarui berkala |
+| Jadwal klub | Proxy `/api/team-matches` (client) |
+
+### Snapshot profil klub
+
+`scripts/snapshot-clubs.mjs` mengambil tim dari klasemen lalu profilnya (stadion, pelatih, skuad) dari API, dan menulis
+`content/snapshots/clubs.json`. Script ini:
+
+- Tanpa `FOOTBALL_DATA_API_KEY`, melewati pengambilan dan membiarkan snapshot lama. Build tetap berjalan.
+- Mematuhi batas paket gratis dengan jeda 6,5 detik per permintaan dan menunggu saat menerima 429.
+- Melewati klub yang snapshot-nya masih lebih baru dari 7 hari.
+
+Build produksi: `npm run build:prod` (menjalankan snapshot lalu `next build`). Gunakan perintah ini sebagai
+**Build command** di Cloudflare Pages.
+
+**Jadwal refresh berkala:** atur build terjadwal di Cloudflare (Deploy Hook yang dipanggil dengan cron harian).
+Dengan demikian profil klub dan sitemap berita tetap segar.
+
+### Catatan Pages Function
+
+- Function berjalan di Workers, bukan Node. Jangan memakai `process` atau modul Node di kode yang dipakai Function.
+  Konfigurasi situs (`lib/config.ts`) sengaja tidak membaca `process.env`.
+- Halaman detail pertandingan tidak masuk sitemap karena jumlahnya dinamis. Ia tetap dapat dirayapi lewat tautan
+  dari Jadwal, Hasil, dan halaman klub.
 
 ## Data pengelola (WAJIB sebelum publik dan sebelum AdSense)
 

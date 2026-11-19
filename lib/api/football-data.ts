@@ -1,6 +1,12 @@
-import type { Match, Scorers, Standings } from '@/types/football';
+import type { ClubProfile, Match, MatchDetail, Scorers, Standings } from '@/types/football';
 import type { FootballProvider } from './provider';
 import { ProviderError, fromHttpStatus } from './errors';
+import {
+  normalizeClubProfile,
+  normalizeMatchDetail,
+  type FdMatchDetail,
+  type FdTeamDetail,
+} from '@/lib/normalize/football-data-detail';
 import {
   normalizeCompetition,
   normalizeMatch,
@@ -104,13 +110,26 @@ export class FootballDataProvider implements FootballProvider {
     return normalizeScorers(data);
   }
 
-  async getMatchById(matchId: string): Promise<Match> {
-    const data = await this.request<FdMatch>(`/matches/${encodeURIComponent(matchId)}`);
-    const match = normalizeMatch(data);
-    if (!match) {
+  async getMatchDetail(matchId: string): Promise<MatchDetail> {
+    const data = await this.request<FdMatchDetail>(`/matches/${encodeURIComponent(matchId)}`);
+    const detail = normalizeMatchDetail(data);
+    if (!detail) {
       throw new ProviderError('NOT_FOUND', 'Pertandingan tidak ditemukan.', 404);
     }
-    return match;
+    return detail;
+  }
+
+  async getTeam(teamId: string): Promise<ClubProfile> {
+    const data = await this.request<FdTeamDetail>(`/teams/${encodeURIComponent(teamId)}`);
+    return normalizeClubProfile(data);
+  }
+
+  async getTeamMatches(teamId: string, dateFrom: string, dateTo: string): Promise<Match[]> {
+    const data = await this.request<FdMatchesResponse>(`/teams/${encodeURIComponent(teamId)}/matches`, {
+      dateFrom,
+      dateTo,
+    });
+    return data.matches.map((m) => normalizeMatch(m)).filter((m): m is Match => m !== null);
   }
 }
 
