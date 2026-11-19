@@ -14,6 +14,8 @@ interface Props {
   emptyText?: string;
   /** Filter status di sisi klien (mis. hanya LIVE). */
   onlyStatuses?: Match['status'][];
+  /** Filter nama klub di sisi klien (tidak peka huruf besar/kecil). */
+  clubQuery?: string;
   /** Interval pembaruan otomatis dalam milidetik. 0 = tidak auto-refresh. */
   refreshMs?: number;
 }
@@ -22,7 +24,7 @@ interface Props {
  * Menampilkan daftar pertandingan dari proxy internal /api/matches.
  * Menangani loading (skeleton), kosong (empty state), dan gagal (error state).
  */
-export function MatchList({ query, emptyTitle, emptyText, onlyStatuses, refreshMs = 0 }: Props) {
+export function MatchList({ query, emptyTitle, emptyText, onlyStatuses, clubQuery, refreshMs = 0 }: Props) {
   const [state, setState] = useState<{
     status: 'loading' | 'ready' | 'error';
     envelope?: ApiEnvelope<Match[]>;
@@ -60,7 +62,12 @@ export function MatchList({ query, emptyTitle, emptyText, onlyStatuses, refreshM
   if (state.status === 'loading') return <CardSkeleton />;
   if (state.status === 'error') return <ErrorState message={state.error ?? ''} onRetry={() => load()} />;
 
-  const matches = (state.envelope?.data ?? []).filter((m) => !onlyStatuses || onlyStatuses.includes(m.status));
+  const needle = clubQuery?.trim().toLowerCase() ?? '';
+  const matches = (state.envelope?.data ?? []).filter(
+    (m) =>
+      (!onlyStatuses || onlyStatuses.includes(m.status)) &&
+      (!needle || m.home.name.toLowerCase().includes(needle) || m.away.name.toLowerCase().includes(needle)),
+  );
 
   return (
     <div className="space-y-3">

@@ -14,15 +14,21 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 | Lapisan API (adapter Football-Data.org, normalisasi, error handler) | Selesai |
 | Proxy server-side `/api/matches` (Cloudflare Pages Functions, cache edge, validasi input) | Selesai |
 | Beranda, Live Score (filter status, kompetisi, auto-refresh) | Selesai |
+| Klasemen (`/klasemen/`), proxy `/api/standings` (cache 1 jam) | Selesai (tahap 2) |
+| Jadwal (`/jadwal/`) dan Hasil (`/hasil/`) dengan filter tanggal, kompetisi, klub | Selesai (tahap 2) |
+| Indeks kompetisi dan halaman per kompetisi (`/kompetisi/[slug]/`) | Selesai (tahap 2) |
 | Komponen navigasi responsif, skeleton, empty state, error state | Selesai |
 | Metadata SEO dasar, JSON-LD Organization & WebSite | Selesai |
-| Halaman klasemen, jadwal, hasil, kompetisi, klub, detail pertandingan | **Belum** (tahap 2) |
+| Detail pertandingan (`/pertandingan/[slug]/`) dan profil klub (`/klub/[slug]/`) | **Belum**, lihat catatan di bawah |
+| Transfer, Statistik, Tentang Kami | **Belum** (tahap 3–4) |
 | Sistem berita (CMS/Markdown), halaman penulis & redaksi | **Belum** (tahap 3) |
-| Halaman legal (Tentang Kami, Kebijakan Privasi, Disclaimer, dll.) | **Belum** (tahap 4) |
+| Halaman legal (Kebijakan Privasi, Disclaimer, Kontak, dll.) | **Belum** (tahap 4) |
 | `robots.txt`, `sitemap.xml`, RSS | **Belum** (tahap 4) |
 | Integrasi AdSense (`ads.txt`, slot iklan, consent) | **Belum**; hanya dibuka setelah akun disetujui |
 
-**Catatan jujur:** beberapa tautan navigasi (mis. `/klasemen/`, `/jadwal/`) sudah ada di menu tetapi halamannya belum dibuat, sehingga akan 404 sampai tahap 2 selesai. Ini sengaja tidak disembunyikan.
+**Catatan jujur:** tautan menu/footer untuk `/berita/`, `/transfer/`, `/statistik/`, `/tentang-kami/`, dan halaman legal sudah ada, tetapi halamannya belum dibuat sehingga akan 404 sampai tahap berikutnya selesai.
+
+**Detail pertandingan dan profil klub belum dibuat.** Di static export, Next.js harus tahu semua slug saat build (`generateStaticParams`). Daftar pertandingan dan klub tidak bisa diambil lengkap dari API saat build tanpa menghabiskan kuota, jadi pendekatannya perlu dipilih dulu: (a) halaman dinamis lewat Pages Function, atau (b) snapshot data harian yang dibuat saat build. Keputusan ini perlu dikonfirmasi.
 
 **Liga Indonesia dan Piala Asia** belum tersedia di Football-Data.org. Keduanya ditandai `providerCode: null` di `lib/config.ts` dan akan menampilkan pesan "data belum tersedia" sampai sumber data yang sesuai ditambahkan.
 
