@@ -1,4 +1,4 @@
-import type { Competition, Match, MatchStatus, Standings, StandingRow, Team } from '@/types/football';
+import type { Competition, Match, MatchStatus, Scorers, Standings, StandingRow, Team, TopScorer } from '@/types/football';
 
 /**
  * Tipe respons mentah dari Football-Data.org (hanya bidang yang dipakai).
@@ -150,6 +150,37 @@ export function normalizeStandings(res: FdStandingsResponse): Standings {
     form: r.form ?? null,
   }));
 
+  return {
+    competition: normalizeCompetition(res.competition),
+    season: res.season?.startDate ? res.season.startDate.slice(0, 4) : null,
+    rows,
+  };
+}
+
+export interface FdScorer {
+  player: { id: number; name: string; nationality?: string | null };
+  team: FdTeam;
+  playedMatches?: number | null;
+  goals: number;
+  assists?: number | null;
+}
+
+export interface FdScorersResponse {
+  competition: FdCompetition;
+  season?: { startDate?: string } | null;
+  scorers: FdScorer[];
+}
+
+export function normalizeScorers(res: FdScorersResponse): Scorers {
+  const rows: TopScorer[] = res.scorers.map((s, i) => ({
+    rank: i + 1,
+    playerName: s.player.name,
+    nationality: s.player.nationality ?? null,
+    team: normalizeTeam(s.team),
+    goals: s.goals,
+    assists: s.assists ?? null,
+    playedMatches: s.playedMatches ?? null,
+  }));
   return {
     competition: normalizeCompetition(res.competition),
     season: res.season?.startDate ? res.season.startDate.slice(0, 4) : null,

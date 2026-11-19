@@ -90,3 +90,19 @@ export interface ApiErrorBody {
     message: string;
   };
 }
+
+export interface TopScorer {
+  rank: number;
+  playerName: string;
+  nationality: string | null;
+  team: Team;
+  goals: number;
+  assists: number | null;
+  playedMatches: number | null;
+}
+
+export interface Scorers {
+  competition: Competition;
+  season: string | null;
+  rows: TopScorer[];
+}

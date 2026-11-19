@@ -1,4 +1,4 @@
-import type { Match, Standings } from '@/types/football';
+import type { Match, Scorers, Standings } from '@/types/football';
 
 /**
  * Kontrak abstraksi provider. Setiap provider (Football-Data.org, API-Football,
@@ -18,6 +18,9 @@ export interface FootballProvider {
 
   /** Klasemen satu kompetisi. `season` opsional, mis. "2025". */
   getStandings(competitionCode: string, season?: string): Promise<Standings>;
+
+  /** Daftar pencetak gol terbanyak satu kompetisi. */
+  getScorers(competitionCode: string, season?: string): Promise<Scorers>;
 
   /** Detail satu pertandingan. */
   getMatchById(matchId: string): Promise<Match>;

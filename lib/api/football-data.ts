@@ -1,10 +1,12 @@
-import type { Match, Standings } from '@/types/football';
+import type { Match, Scorers, Standings } from '@/types/football';
 import type { FootballProvider } from './provider';
 import { ProviderError, fromHttpStatus } from './errors';
 import {
   normalizeCompetition,
   normalizeMatch,
   normalizeStandings,
+  normalizeScorers,
+  type FdScorersResponse,
   type FdMatch,
   type FdStandingsResponse,
   type FdMatchesResponse,
@@ -92,6 +94,14 @@ export class FootballDataProvider implements FootballProvider {
       { season },
     );
     return normalizeStandings(data);
+  }
+
+  async getScorers(competitionCode: string, season?: string): Promise<Scorers> {
+    const data = await this.request<FdScorersResponse>(
+      `/competitions/${encodeURIComponent(competitionCode)}/scorers`,
+      { season, limit: '20' },
+    );
+    return normalizeScorers(data);
   }
 
   async getMatchById(matchId: string): Promise<Match> {

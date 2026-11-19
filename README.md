@@ -23,10 +23,12 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 | Sistem berita berbasis Markdown (`/berita/`, `/berita/[slug]/`, `/berita/kategori/[slug]/`) dengan gerbang kualitas saat build | Selesai (tahap 3) |
 | Profil penulis (`/penulis/`, `/penulis/[slug]/`) | Selesai (tahap 3) |
 | RSS feed (`/rss.xml`, 50 artikel terbaru) | Selesai (tahap 3) |
-| Halaman redaksi (`/redaksi/`), Transfer, Statistik, Tentang Kami | **Belum** (tahap 4) |
+| Transfer (`/transfer/`) dan Statistik pencetak gol (`/statistik/`, proxy `/api/scorers`) | Selesai (tahap 4) |
+| Sembilan halaman legal dan kepercayaan (Tentang Kami, Kontak, Kebijakan Privasi, Disclaimer, Pedoman Redaksi, Redaksi, Koreksi & Hak Jawab, Syarat & Ketentuan, Peta Situs) | Selesai, **menunggu data pengelola** (lihat di bawah) |
+| `robots.txt`, `sitemap.xml`, `news-sitemap.xml` | Selesai (tahap 4) |
 | Halaman legal (Kebijakan Privasi, Disclaimer, Kontak, dll.) | **Belum** (tahap 4) |
-| `robots.txt`, `sitemap.xml`, RSS | **Belum** (tahap 4) |
 | Integrasi AdSense (`ads.txt`, slot iklan, consent) | **Belum**; hanya dibuka setelah akun disetujui |
+| Detail pertandingan & profil klub | **Belum**, menunggu keputusan arsitektur |
 
 **Catatan jujur:** tautan menu/footer untuk `/berita/`, `/transfer/`, `/statistik/`, `/tentang-kami/`, dan halaman legal sudah ada, tetapi halamannya belum dibuat sehingga akan 404 sampai tahap berikutnya selesai.
 
@@ -46,6 +48,24 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 Build akan menolak artikel dengan judul lebih dari 70 karakter, deskripsi di luar 50–160 karakter, kategori tak dikenal, penulis tanpa profil, atau isi kurang dari 300 kata. Aturan ini sengaja dibuat untuk menjaga kualitas dan kelayakan AdSense.
 
 Halaman `/berita/_kosong/` dan `/penulis/_kosong/` adalah sentinel teknis agar static export tetap berjalan saat belum ada konten. Keduanya diberi `noindex` dan diarahkan ke 404 lewat `public/_redirects`.
+
+## Data pengelola (WAJIB sebelum publik dan sebelum AdSense)
+
+Identitas pengelola disimpan di `lib/legal/operator.ts`. Semua nilainya saat ini `null`, dan halaman legal menampilkan penanda kuning
+"[... belum diisi]" sampai diisi. Field yang harus diisi dengan data sebenarnya:
+
+- `legalName`: nama badan hukum atau nama pengelola
+- `address`: alamat surat
+- `contactEmail`: email redaksi/kontak yang sudah aktif
+- `editorInChief`: nama Pemimpin Redaksi
+- `founded`: tahun berdiri
+
+Jangan mengisi field ini dengan tebakan. Jika data belum pasti, biarkan penanda tetap terlihat.
+
+## Sitemap dan sitemap berita
+
+- `/sitemap.xml` memuat seluruh halaman publik canonical, termasuk kategori, kompetisi, penulis, dan artikel. Halaman sentinel `_kosong` dan endpoint API tidak pernah dimasukkan.
+- `/news-sitemap.xml` memuat artikel yang terbit dalam 2 hari terakhir, sesuai format Google News. Karena situs statis, daftar ini dihitung saat build. **Jadwalkan build ulang setiap hari** (mis. Cron Trigger atau Deploy Hook Cloudflare) agar tetap akurat.
 
 ## Stack
 
