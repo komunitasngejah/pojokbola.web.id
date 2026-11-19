@@ -20,8 +20,10 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 | Komponen navigasi responsif, skeleton, empty state, error state | Selesai |
 | Metadata SEO dasar, JSON-LD Organization & WebSite | Selesai |
 | Detail pertandingan (`/pertandingan/[slug]/`) dan profil klub (`/klub/[slug]/`) | **Belum**, lihat catatan di bawah |
-| Transfer, Statistik, Tentang Kami | **Belum** (tahap 3–4) |
-| Sistem berita (CMS/Markdown), halaman penulis & redaksi | **Belum** (tahap 3) |
+| Sistem berita berbasis Markdown (`/berita/`, `/berita/[slug]/`, `/berita/kategori/[slug]/`) dengan gerbang kualitas saat build | Selesai (tahap 3) |
+| Profil penulis (`/penulis/`, `/penulis/[slug]/`) | Selesai (tahap 3) |
+| RSS feed (`/rss.xml`, 50 artikel terbaru) | Selesai (tahap 3) |
+| Halaman redaksi (`/redaksi/`), Transfer, Statistik, Tentang Kami | **Belum** (tahap 4) |
 | Halaman legal (Kebijakan Privasi, Disclaimer, Kontak, dll.) | **Belum** (tahap 4) |
 | `robots.txt`, `sitemap.xml`, RSS | **Belum** (tahap 4) |
 | Integrasi AdSense (`ads.txt`, slot iklan, consent) | **Belum**; hanya dibuka setelah akun disetujui |
@@ -31,6 +33,19 @@ Ini adalah **fondasi tahap 1**. Yang sudah ada dan terverifikasi build:
 **Detail pertandingan dan profil klub belum dibuat.** Di static export, Next.js harus tahu semua slug saat build (`generateStaticParams`). Daftar pertandingan dan klub tidak bisa diambil lengkap dari API saat build tanpa menghabiskan kuota, jadi pendekatannya perlu dipilih dulu: (a) halaman dinamis lewat Pages Function, atau (b) snapshot data harian yang dibuat saat build. Keputusan ini perlu dikonfirmasi.
 
 **Liga Indonesia dan Piala Asia** belum tersedia di Football-Data.org. Keduanya ditandai `providerCode: null` di `lib/config.ts` dan akan menampilkan pesan "data belum tersedia" sampai sumber data yang sesuai ditambahkan.
+
+## Menulis dan menerbitkan artikel
+
+1. Salin `content/articles/_template-artikel.md` menjadi `content/articles/<slug>.md`.
+2. Isi frontmatter dengan data nyata. Penulis harus sudah ada di `content/authors/` dan tidak berstatus draft.
+3. Tulis isi dalam Markdown, minimal 300 kata, dengan kalimat sendiri.
+4. Cantumkan minimal satu sumber yang dapat diverifikasi di `sources`.
+5. Hapus `draft: true` hanya setelah editor memeriksa artikel.
+6. Jalankan `npm run build`. Jika ada aturan yang dilanggar, build gagal dan pesannya menunjuk ke file yang bermasalah.
+
+Build akan menolak artikel dengan judul lebih dari 70 karakter, deskripsi di luar 50–160 karakter, kategori tak dikenal, penulis tanpa profil, atau isi kurang dari 300 kata. Aturan ini sengaja dibuat untuk menjaga kualitas dan kelayakan AdSense.
+
+Halaman `/berita/_kosong/` dan `/penulis/_kosong/` adalah sentinel teknis agar static export tetap berjalan saat belum ada konten. Keduanya diberi `noindex` dan diarahkan ke 404 lewat `public/_redirects`.
 
 ## Stack
 

@@ -39,6 +39,53 @@ export function buildMetadata({ title, description, path, type = 'website', imag
   };
 }
 
+/** BreadcrumbList. Item terakhir boleh tanpa URL (halaman saat ini). */
+export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: new URL(item.path, SITE.url).toString(),
+    })),
+  };
+}
+
+/**
+ * Article / NewsArticle untuk satu artikel. Hanya berisi data yang benar-benar ada.
+ * Tidak ada rating, review, atau field palsu.
+ */
+export function articleJsonLd(input: {
+  type: 'NewsArticle' | 'Article';
+  title: string;
+  description: string;
+  path: string;
+  publishedAt: string;
+  updatedAt: string | null;
+  authors: { name: string; path: string }[];
+  image: string | null;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': input.type,
+    headline: input.title,
+    description: input.description,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': new URL(input.path, SITE.url).toString() },
+    datePublished: input.publishedAt,
+    dateModified: input.updatedAt ?? input.publishedAt,
+    author: input.authors.map((a) => ({
+      '@type': 'Person',
+      name: a.name,
+      url: new URL(a.path, SITE.url).toString(),
+    })),
+    publisher: { '@id': `${SITE.url}/#organization` },
+    image: input.image ? new URL(input.image, SITE.url).toString() : undefined,
+    inLanguage: SITE.language,
+  };
+}
+
 /** Structured data Organization & WebSite (untuk halaman beranda). */
 export function organizationJsonLd() {
   return {

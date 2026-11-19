@@ -45,6 +45,25 @@ export function findCompetitionBySlug(slug: string): CompetitionConfig | undefin
   return COMPETITIONS.find((c) => c.slug === slug);
 }
 
+/** Kategori berita. Slug dipakai di URL: /berita/kategori/[slug]/ */
+export const CATEGORIES: { slug: string; name: string }[] = [
+  { slug: 'liga-indonesia', name: 'Liga Indonesia' },
+  { slug: 'liga-inggris', name: 'Liga Inggris' },
+  { slug: 'liga-spanyol', name: 'Liga Spanyol' },
+  { slug: 'liga-italia', name: 'Liga Italia' },
+  { slug: 'liga-jerman', name: 'Liga Jerman' },
+  { slug: 'liga-champions', name: 'Liga Champions' },
+  { slug: 'timnas-indonesia', name: 'Timnas Indonesia' },
+  { slug: 'transfer-pemain', name: 'Transfer Pemain' },
+  { slug: 'analisis', name: 'Analisis' },
+  { slug: 'prediksi', name: 'Prediksi' },
+  { slug: 'teknologi-sepak-bola', name: 'Teknologi Sepak Bola' },
+];
+
+export function findCategory(slug: string) {
+  return CATEGORIES.find((c) => c.slug === slug);
+}
+
 /** Batas waktu cache (detik) per jenis data. Menjaga kuota API tetap aman. */
 export const CACHE_TTL = {
   liveMatches: 30, // pertandingan berlangsung: sering diperbarui

@@ -2,9 +2,12 @@ import Link from 'next/link';
 import { SITE, COMPETITIONS } from '@/lib/config';
 import { organizationJsonLd } from '@/lib/seo/metadata';
 import { TodayMatches } from '@/components/TodayMatches';
+import { ArticleCard } from '@/components/ArticleCard';
+import { loadArticles } from '@/lib/content/loader';
 
 export default function HomePage() {
   const jsonLd = organizationJsonLd();
+  const latest = loadArticles().slice(0, 3);
 
   return (
     <div className="space-y-10">
@@ -59,13 +62,26 @@ export default function HomePage() {
       </section>
 
       <section aria-labelledby="judul-berita" className="space-y-3">
-        <h2 id="judul-berita" className="text-xl font-bold">
-          Berita Sepak Bola
-        </h2>
-        <p className="rounded-card border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-600 dark:border-navy-700 dark:bg-navy-800 dark:text-slate-400">
-          Belum ada artikel yang dipublikasikan. Artikel akan ditampilkan di sini setelah melalui proses penulisan dan
-          pemeriksaan redaksi.
-        </p>
+        <div className="flex items-end justify-between">
+          <h2 id="judul-berita" className="text-xl font-bold">
+            Berita Sepak Bola Terbaru
+          </h2>
+          <Link href="/berita/" className="text-sm font-semibold text-pitch-600 hover:underline">
+            Semua berita
+          </Link>
+        </div>
+        {latest.length === 0 ? (
+          <p className="rounded-card border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-600 dark:border-navy-700 dark:bg-navy-800 dark:text-slate-400">
+            Belum ada artikel yang dipublikasikan. Artikel akan ditampilkan di sini setelah melalui proses penulisan dan
+            pemeriksaan redaksi.
+          </p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {latest.map((a) => (
+              <ArticleCard key={a.slug} article={a} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
