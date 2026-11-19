@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build output
+.next/
+out/
+.wrangler/
+
+# environment & secrets (JANGAN di-commit)
+.env
+.env.local
+.env.*.local
+.dev.vars
+
+# misc
+*.log
+.DS_Store
+tsconfig.tsbuildinfo
+next-env.d.ts
