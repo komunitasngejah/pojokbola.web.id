@@ -193,7 +193,7 @@ npm run build                                      # build produksi
 
 - Publisher ID: `ca-pub-5334893977573745`, disimpan di `lib/config.ts` (`ADSENSE.publisherId`). ID ini publik dan juga tercantum di `ads.txt`.
 - `public/ads.txt` berisi baris resmi: `google.com, pub-5334893977573745, DIRECT, f08c47fec0942fa0`. Cloudflare Pages menyajikan file ini di `https://pojokbola.web.id/ads.txt`.
-- Meta `google-adsense-account` dan skrip `adsbygoogle.js` terpasang di setiap halaman, termasuk halaman detail pertambahan yang dirender Pages Function.
+- Meta `google-adsense-account` dan skrip `adsbygoogle.js` terpasang di setiap halaman, termasuk halaman detail pertandingan yang dirender Pages Function.
 - **Belum ada slot iklan.** Tampilan iklan dikendalikan dari dashboard AdSense (Auto ads). Biarkan dimatikan sampai akun disetujui.
 - **Sebelum mengaktifkan iklan:** pasang pengelola persetujuan cookie (CMP) untuk pengunjung di wilayah yang mewajibkannya (EEA, Inggris, dll.). Ini belum diimplementasikan.
 
