@@ -1,5 +1,5 @@
 import { esc, jsonForScript } from './escape';
-import { SITE } from '@/lib/config';
+import { ADSENSE, SITE } from '@/lib/config';
 
 export interface PageShell {
   title: string;
@@ -35,7 +35,9 @@ export function renderShell(p: PageShell): string {
   <meta property="og:locale" content="${SITE.locale}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
+  <meta name="google-adsense-account" content="${esc(ADSENSE.publisherId)}">
   <link rel="stylesheet" href="/pojokbola-detail.css">
+  <script async src="${esc(ADSENSE.scriptUrl)}?client=${esc(ADSENSE.publisherId)}" crossorigin="anonymous"></script>
   ${ld}
 </head>
 <body>

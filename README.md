@@ -189,12 +189,30 @@ npm run build                                      # build produksi
 3. Kirim `https://pojokbola.web.id/sitemap.xml` setelah file tersebut tersedia.
 4. Gunakan *URL Inspection → Request indexing* untuk halaman penting. Pengindeksan tidak dijamin instan.
 
-## Google AdSense (dikerjakan setelah akun disetujui)
+## Google AdSense
 
-- Jangan menampilkan iklan sebelum akun AdSense disetujui dan kode iklan tersedia.
-- Isi `NEXT_PUBLIC_ADSENSE_PUBLISHER_ID` dengan publisher ID asli, lalu buat `ads.txt` dengan baris resmi dari AdSense.
-- Jangan membuat `ads.txt` dengan ID palsu.
-- Halaman legal (Kebijakan Privasi, Disclaimer, Kontak) harus lengkap sebelum pengajuan.
+- Publisher ID: `ca-pub-5334893977573745`, disimpan di `lib/config.ts` (`ADSENSE.publisherId`). ID ini publik dan juga tercantum di `ads.txt`.
+- `public/ads.txt` berisi baris resmi: `google.com, pub-5334893977573745, DIRECT, f08c47fec0942fa0`. Cloudflare Pages menyajikan file ini di `https://pojokbola.web.id/ads.txt`.
+- Meta `google-adsense-account` dan skrip `adsbygoogle.js` terpasang di setiap halaman, termasuk halaman detail pertambahan yang dirender Pages Function.
+- **Belum ada slot iklan.** Tampilan iklan dikendalikan dari dashboard AdSense (Auto ads). Biarkan dimatikan sampai akun disetujui.
+- **Sebelum mengaktifkan iklan:** pasang pengelola persetujuan cookie (CMP) untuk pengunjung di wilayah yang mewajibkannya (EEA, Inggris, dll.). Ini belum diimplementasikan.
+
+## Deploy ke GitHub dan Cloudflare Pages
+
+1. **GitHub:** buat repository kosong (mis. `pojokbola-web`), lalu di folder proyek:
+   ```bash
+   git remote add origin https://github.com/<akun>/pojokbola-web.git
+   git push -u origin master
+   ```
+2. **Cloudflare Pages:** Workers & Pages → Create → Pages → Connect to Git → pilih repository.
+   - Build command: `npm run build:prod`
+   - Build output directory: `out`
+   - Environment variables: `NODE_VERSION=20`, `FOOTBALL_DATA_API_KEY` (Encrypted).
+3. **Domain:** tambahkan `pojokbola.web.id` sebagai custom domain.
+4. **Refresh harian:** buat Deploy Hook di Cloudflare, lalu jadwalkan pemanggilannya setiap hari (mis. dengan GitHub Actions `schedule`).
+5. **Verifikasi setelah deploy:**
+   - `https://pojokbola.web.id/ads.txt` harus menampilkan baris publisher di atas.
+   - Lihat sumber halaman dan pastikan ada `<meta name="google-adsense-account" ...>`.
 
 ## Lisensi & data
 

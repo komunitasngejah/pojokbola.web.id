@@ -26,6 +26,16 @@ export interface CompetitionConfig {
   providerCode: string | null;
 }
 
+/**
+ * Identitas AdSense. Publisher ID bersifat publik (juga tercantum di ads.txt), jadi aman di kode.
+ * Iklan BELUM ditampilkan: halaman ini hanya memuat skrip verifikasi. Slot iklan ditambahkan
+ * setelah akun dikonfirmasi disetujui.
+ */
+export const ADSENSE = {
+  publisherId: 'ca-pub-5334893977573745',
+  scriptUrl: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+} as const;
+
 export const COMPETITIONS: CompetitionConfig[] = [
   { slug: 'liga-indonesia', name: 'Liga Indonesia', providerCode: null },
   { slug: 'liga-inggris', name: 'Liga Inggris', providerCode: 'PL' },

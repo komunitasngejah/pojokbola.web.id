@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
-import { SITE } from '@/lib/config';
+import { ADSENSE, SITE } from '@/lib/config';
 import { buildMetadata } from '@/lib/seo/metadata';
 
 export const metadata: Metadata = {
@@ -19,6 +20,9 @@ export const metadata: Metadata = {
   verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
     : undefined,
+  other: {
+    'google-adsense-account': ADSENSE.publisherId,
+  },
 };
 
 export const viewport: Viewport = {
@@ -40,6 +44,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Lewati ke konten utama
         </a>
+        <Script
+          id="adsbygoogle-init"
+          src={`${ADSENSE.scriptUrl}?client=${ADSENSE.publisherId}`}
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
         <SiteHeader />
         <main id="konten-utama" className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">
           {children}
