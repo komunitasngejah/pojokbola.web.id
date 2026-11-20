@@ -1,0 +1,120 @@
+# Konfigurasi Decap CMS untuk halaman /admin.
+# Setiap penyimpanan dari halaman ini menjadi commit ke branch main, lalu Cloudflare membangun ulang situs.
+# Aturan kualitas artikel (minimal 300 kata, minimal 1 sumber, dll.) tetap dicek saat build.
+
+backend:
+  name: github
+  repo: komunitasngejah/pojokbola.web.id
+  branch: main
+  base_url: https://pojokbola.web.id
+  auth_endpoint: oauth/auth
+
+site_url: https://pojokbola.web.id
+display_url: https://pojokbola.web.id
+
+media_folder: "public/images/berita"
+public_folder: "/images/berita"
+
+editor:
+  preview: false
+
+collections:
+  - name: berita
+    label: "Berita"
+    label_singular: "Artikel"
+    folder: "content/articles"
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: "{{fields.slug}}"
+    summary: "{{title}} · {{fields.category}}"
+    fields:
+      - label: "Slug (alamat URL)"
+        name: slug
+        widget: string
+        hint: "Huruf kecil, angka, dan tanda hubung saja. Contoh: cara-kerja-var. Jangan diubah setelah terbit."
+      - label: "Judul"
+        name: title
+        widget: string
+        hint: "Maksimal 70 karakter."
+      - label: "Deskripsi"
+        name: description
+        widget: text
+        hint: "50 sampai 160 karakter. Ditampilkan di hasil pencarian."
+      - label: "Kategori"
+        name: category
+        widget: select
+        options:
+          - { label: "Liga Indonesia", value: "liga-indonesia" }
+          - { label: "Liga Inggris", value: "liga-inggris" }
+          - { label: "Liga Spanyol", value: "liga-spanyol" }
+          - { label: "Liga Italia", value: "liga-italia" }
+          - { label: "Liga Jerman", value: "liga-jerman" }
+          - { label: "Liga Champions", value: "liga-champions" }
+          - { label: "Timnas Indonesia", value: "timnas-indonesia" }
+          - { label: "Transfer Pemain", value: "transfer-pemain" }
+          - { label: "Analisis", value: "analisis" }
+          - { label: "Prediksi", value: "prediksi" }
+          - { label: "Teknologi Sepak Bola", value: "teknologi-sepak-bola" }
+      - label: "Penulis"
+        name: authors
+        widget: select
+        multiple: true
+        default: ["kang-ruli"]
+        options:
+          - { label: "Kang Ruli", value: "kang-ruli" }
+      - label: "Editor"
+        name: editor
+        widget: string
+        default: "Kang Ruli"
+      - label: "Tanggal terbit"
+        name: publishedAt
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm:ss"
+        picker_utc: false
+      - label: "Terakhir diperbarui"
+        name: updatedAt
+        widget: datetime
+        required: false
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm:ss"
+        picker_utc: false
+        hint: "Isi hanya jika artikel direvisi secara substansial. Kosongkan jika tidak."
+      - label: "Tag"
+        name: tags
+        widget: list
+        required: false
+        hint: "Contoh: klasemen, liga, panduan"
+      - label: "Gambar utama"
+        name: image
+        widget: image
+        required: false
+        hint: "Gunakan hanya gambar yang Anda miliki haknya."
+      - label: "Teks alternatif gambar"
+        name: imageAlt
+        widget: string
+        required: false
+      - label: "Keterangan gambar"
+        name: imageCaption
+        widget: string
+        required: false
+      - label: "Sumber"
+        name: sources
+        widget: list
+        min: 1
+        hint: "Wajib minimal satu sumber."
+        fields:
+          - { label: "Judul sumber", name: title, widget: string }
+          - { label: "URL", name: url, widget: string }
+      - label: "Draft"
+        name: draft
+        widget: boolean
+        default: false
+        hint: "Centang untuk menyimpan tanpa menampilkan artikel di situs."
+      - label: "Isi artikel"
+        name: body
+        widget: markdown
