@@ -10,7 +10,7 @@ export const OPERATOR = {
   address: 'Bandung, Jawa Barat' as string | null, // alamat surat (boleh ditampilkan sesuai kebijakan Anda)
   contactEmail: 'kangrulidkv@gmail.com' as string | null, // mis. redaksi@pojokbola.web.id, setelah dibuat dan diverifikasi
   editorInChief: 'Kang Ruli' as string | null, // Pemimpin Redaksi
-  founded: '2020' null as string | null, // tahun berdiri, mis. "2026"
+  founded: '2020' as string | null, // tahun berdiri, mis. "2026"
 } as const;
 
 export type OperatorField = keyof typeof OPERATOR;
