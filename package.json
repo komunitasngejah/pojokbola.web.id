@@ -1,0 +1,38 @@
+{
+  "name": "pojokbola-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PojokBola - Portal sepak bola Indonesia dan internasional (pojokbola.web.id)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint",
+    "pages:dev": "wrangler pages dev out --compatibility-date=2024-09-23",
+    "deploy": "wrangler pages deploy out --project-name=pojokbola",
+    "snapshot:clubs": "node scripts/snapshot-clubs.mjs",
+    "build:prod": "node scripts/snapshot-clubs.mjs && next build"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.460.0",
+    "marked": "^18.2.1",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sanitize-html": "^2.18.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241112.0",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/sanitize-html": "^2.16.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.90.0"
+  }
+}
