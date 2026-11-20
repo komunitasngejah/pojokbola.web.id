@@ -6,10 +6,10 @@
  * Sebelum mengajukan AdSense, semua field wajib di bawah harus terisi dengan data sebenarnya.
  */
 export const OPERATOR = {
-  legalName: null as string | null, // nama badan hukum atau nama pengelola perorangan
-  address: null as string | null, // alamat surat (boleh ditampilkan sesuai kebijakan Anda)
-  contactEmail: null as string | null, // mis. redaksi@pojokbola.web.id, setelah dibuat dan diverifikasi
-  editorInChief: null as string | null, // Pemimpin Redaksi
+  legalName: 'Kang Ruli' as string | null, // nama badan hukum atau nama pengelola perorangan
+  address: 'Bandung, Jawa Barat' as string | null, // alamat surat (boleh ditampilkan sesuai kebijakan Anda)
+  contactEmail: 'kangrulidkv@gmail.com' as string | null, // mis. redaksi@pojokbola.web.id, setelah dibuat dan diverifikasi
+  editorInChief: 'Kang Ruli' as string | null, // Pemimpin Redaksi
   founded: null as string | null, // tahun berdiri, mis. "2026"
 } as const;
 
