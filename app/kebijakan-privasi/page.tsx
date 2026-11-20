@@ -12,7 +12,7 @@ export default function KebijakanPrivasiPage() {
   return (
     <LegalPage title="Kebijakan Privasi" description="Bagaimana PojokBola memperlakukan informasi Anda." updated="19 November 2026">
       <p>
-        Kebijakan ini menjelaskan informasi apa yang diproses saat Anda menggunakan PojokBola, dan untuk apa. Pengelola:{'Kang Ruli '}
+        Kebijakan ini menjelaskan informasi apa yang diproses saat Anda menggunakan PojokBola, dan untuk apa. Pengelola:{' '}
         <Operator field="legalName" label="nama pengelola" />.
       </p>
       <h2>Informasi yang kami proses</h2>
