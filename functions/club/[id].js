@@ -1,0 +1,12 @@
+const BASE="https://v3.football.api-sports.io";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+export async function onRequest({params,env}) {
+ const id=String(params.id||"");if(!/^\\d+$/.test(id))return new Response("Not found",{status:404});
+ const headers={"content-type":"text/html; charset=utf-8","cache-control":"public, max-age=300, s-maxage=900"};
+ const shell=(title,desc,html)=>new Response(`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(desc)}"><meta name="robots" content="index,follow"><link rel="canonical" href="https://pojokbola.web.id/club/${id}"><link rel="stylesheet" href="/assets/style.css"></head><body><header class="top"><a class="brand" href="/">POJOK<span>BOLA</span></a><nav><a href="/">Beranda</a><a href="/#live">Live Score</a></nav></header><main class="detail">${html}<p><a href="/">← Kembali ke PojokBola</a></p></main><footer>© PojokBola.web.id</footer></body></html>`,{headers});
+ if(!env.API_FOOTBALL_KEY)return shell("Profil klub | PojokBola","Profil klub sepak bola","<h1>Konfigurasi API belum selesai</h1>");
+ try{const r=await fetch(`${BASE}/teams?id=${id}`,{headers:{"x-apisports-key":env.API_FOOTBALL_KEY},cf:{cacheTtl:3600}});const d=await r.json(),x=d.response?.[0];if(!x)return new Response("Klub tidak ditemukan",{status:404});
+ const t=x.team,v=x.venue;const title=`Profil ${t.name} | PojokBola`,desc=`Profil klub ${t.name} dari ${t.country}, stadion ${v?.name||"belum tersedia"}.`;
+ return shell(title,desc,`<p class="eyebrow">PROFIL KLUB</p><div class="detail-card"><div style="display:flex;align-items:center;gap:22px"><img src="${t.logo}" alt="${esc(t.name)}" style="width:90px;height:90px;object-fit:contain"><div><h1>${esc(t.name)}</h1><p>${esc(t.country)} · Berdiri ${esc(t.founded||"—")}</p></div></div></div><h2>Informasi klub</h2><div class="detail-card"><p><b>Nama:</b> ${esc(t.name)}</p><p><b>Negara:</b> ${esc(t.country)}</p><p><b>Tahun berdiri:</b> ${esc(t.founded||"Belum tersedia")}</p><p><b>Stadion:</b> ${esc(v?.name||"Belum tersedia")}</p><p><b>Kota:</b> ${esc(v?.city||"Belum tersedia")}</p><p><b>Kapasitas:</b> ${esc(v?.capacity||"Belum tersedia")}</p></div>`);
+ }catch(e){return shell("Profil klub | PojokBola","Profil klub sepak bola","<h1>Data klub belum dapat dimuat</h1>");}
+}
