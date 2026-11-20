@@ -118,3 +118,5 @@ collections:
       - label: "Isi artikel"
         name: body
         widget: markdown
+        modes: ["raw"]
+        hint: "Tulis Markdown atau HTML sederhana: p, h2, h3, strong, em, ul, ol, li, a, blockquote, img, table."
