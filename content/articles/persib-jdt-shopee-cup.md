@@ -13,9 +13,9 @@ authors:
 editor: Kang Ruli
 publishedAt: 2026-11-20T13:30:00+07:00
 updatedAt: null
-image: null
-imageAlt: "Klasemen Grup B Shopee Cup 2026/2027"
-imageCaption: null
+image: "/images/berita/JDT%20dan%20Persib_%20Poin%20Sama%2C%20Gol%20Sama.png"
+imageAlt: "Ilustrasi perbandingan Persib Bandung dan JDT di Grup B Shopee Cup 2026/2027"
+imageCaption: "Persib Bandung dan JDT memiliki poin dan selisih gol yang sama di Grup B."
 sources:
   - title: "ANTARA Jabar: Klasemen Grup B Shopee Cup 2026, Persib Bandung peringkat dua meski poin sama dengan JDT"
     url: https://jabar.antaranews.com/berita/720267/klasemen-grup-b-shopee-cup-2026-persib-bandung-peringkat-dua-meski-poin-sama-dengan-jdt
